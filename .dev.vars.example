@@ -1,0 +1,16 @@
+# Cloudflare Workers ローカル開発用の環境変数サンプル
+# このファイルをコピーして .dev.vars を作成し、実際の値を記入する。
+# .dev.vars は .gitignore に登録済みのため、リポジトリにはコミットしない。
+#
+# 本番環境では以下のコマンドで設定する:
+#   wrangler secret put SESSION_SECRET
+#   wrangler secret put AUTH_USERNAME
+#   wrangler secret put AUTH_PASSWORD
+
+# セッション署名用シークレット（32文字以上のランダム文字列を推奨）
+# 生成例: openssl rand -hex 32
+SESSION_SECRET=your-local-session-secret-change-this
+
+# 管理者認証情報
+AUTH_USERNAME=admin
+AUTH_PASSWORD=change-this-password

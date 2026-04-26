@@ -1,0 +1,62 @@
+# CI ワークフロー
+#
+# 実行タイミングの設計:
+#   - push to main: マージ後の最終確認
+#   - pull_request to main: マージ前のゲートチェック（最重要）
+#   - push to claude/**: 開発中の自動チェック（early feedback）
+#
+# ジョブを 1 つにまとめた理由:
+#   - lint → typecheck → test の順に失敗が少ない（フォールファスト）
+#   - 並列化より早期フィードバックを優先
+#   - 無料プランの GitHub Actions 分数を節約する
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - "claude/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    name: Lint / TypeCheck / Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: コードをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.js のセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          # package-lock.json のハッシュでキャッシュを管理
+          # ロックファイルが変わったときだけ npm ci が走る
+          cache: "npm"
+
+      - name: 依存パッケージのインストール
+        run: npm ci
+
+      # ----- Step 1: Lint -----
+      # コードスタイル・React Hooks のルール違反を検出する。
+      # TypeScript の型エラーより先にチェックする（構文エラーが型エラーを隠すため）。
+      - name: ESLint
+        run: npm run lint
+
+      # ----- Step 2: TypeCheck -----
+      # 本番コード（src）の型チェック。テストは別 tsconfig で確認する。
+      - name: 型チェック（本番コード）
+        run: npm run typecheck
+
+      # テストコード自体の型チェック
+      - name: 型チェック（テストコード）
+        run: npm run typecheck:test
+
+      # ----- Step 3: Test -----
+      # 単体テストの実行。lint・型チェックが通ってから実行する。
+      - name: テスト実行
+        run: npm run test

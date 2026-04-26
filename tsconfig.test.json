@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": [
+      "vitest/globals",
+      "@cloudflare/workers-types/2023-07-01",
+      "@types/react",
+      "@types/react-dom"
+    ],
+    "moduleResolution": "Bundler"
+  },
+  "include": [
+    "app/**/*.test.ts",
+    "app/**/*.test.tsx",
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "app/lib/**/*.ts",
+    "app/components/**/*.tsx",
+    "drizzle/**/*.ts",
+    "load-context.ts",
+    "worker-configuration.d.ts"
+  ],
+  "exclude": []
+}

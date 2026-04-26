@@ -1,0 +1,15 @@
+node_modules
+
+/.cache
+/build
+/public/build
+
+# Cloudflare Workers ローカル開発用の環境変数ファイル
+# AUTH_USERNAME, AUTH_PASSWORD, SESSION_SECRET を含むため必ず除外する
+.dev.vars
+
+# wrangler のローカルキャッシュ・ストレージ
+.wrangler
+
+# ビルド成果物
+dist

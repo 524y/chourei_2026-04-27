@@ -1,0 +1,47 @@
+# Cloudflare Workers 設定ファイル
+# wrangler.toml はリポジトリに含めるが、秘密情報（シークレット）は
+# `wrangler secret put` コマンドで設定し、このファイルには書かない。
+
+name = "chourei"
+main = "workers/app.ts"
+compatibility_date = "2025-01-01"
+
+# Node.js 互換 API（Buffer 等）を有効化
+# Remix のランタイムが一部 Node.js API を使用するため必要
+compatibility_flags = ["nodejs_compat"]
+
+# 静的アセット（CSS, JS バンドル等）の配信設定
+[site]
+bucket = "./public"
+
+# ビルド設定
+# remix vite:build の出力先を Workers が認識できるように設定
+[build]
+command = "npm run build"
+
+# ===================================================================
+# D1 データベース バインディング
+# ===================================================================
+# database_id は以下のコマンドで取得する:
+#   wrangler d1 create chourei-db
+# production と local dev で同じバインディング名 DB を使用する。
+# ローカル開発時は wrangler が自動的にローカルの SQLite を使用する。
+[[d1_databases]]
+binding = "DB"
+database_name = "chourei-db"
+database_id = "YOUR_DATABASE_ID"  # 要変更: wrangler d1 create chourei-db で取得
+migrations_dir = "migrations"
+
+# ===================================================================
+# シークレット（機密情報）の設定方法
+# ===================================================================
+# 以下のコマンドで各シークレットを設定すること（このファイルには書かない）:
+#
+#   wrangler secret put SESSION_SECRET   # セッション署名用の乱数文字列（32文字以上推奨）
+#   wrangler secret put AUTH_USERNAME    # 管理者ユーザー名
+#   wrangler secret put AUTH_PASSWORD    # 管理者パスワード
+#
+# ローカル開発用は .dev.vars ファイルに記載する（.gitignore に追加済み）:
+#   SESSION_SECRET=your-local-secret-here
+#   AUTH_USERNAME=admin
+#   AUTH_PASSWORD=your-password-here
