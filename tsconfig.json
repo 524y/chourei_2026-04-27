@@ -1,5 +1,6 @@
 {
   "include": ["**/*.ts", "**/*.tsx", ".server/**/*.ts", ".server/**/*.tsx"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "test/**"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["@cloudflare/workers-types/2023-07-01"],

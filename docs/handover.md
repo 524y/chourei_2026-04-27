@@ -4,10 +4,18 @@
 
 ## 現在の状態
 
-住所録アプリケーションの初期実装が完了。
+住所録アプリケーションの初期実装 + テスト・lint・CI の整備が完了。
 コードは `claude/address-book-remix-workers-UrJED` ブランチにコミット済み。
 
 デプロイはまだ完了していない（要セットアップ）。
+
+## CI ステータス
+
+GitHub Actions（`.github/workflows/ci.yml`）が以下のタイミングで実行される:
+- `main` への push / PR
+- `claude/**` ブランチへの push
+
+各 CI ステップ: **ESLint** → **型チェック（本番）** → **型チェック（テスト）** → **Vitest**
 
 ## 未完了タスク
 

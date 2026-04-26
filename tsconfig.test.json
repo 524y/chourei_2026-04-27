@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": [],
+    "moduleResolution": "Bundler"
+  },
+  "include": [
+    "app/**/*.test.ts",
+    "app/**/*.test.tsx",
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "app/lib/**/*.ts",
+    "app/components/**/*.tsx",
+    "drizzle/**/*.ts"
+  ],
+  "exclude": []
+}
