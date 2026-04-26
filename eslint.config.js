@@ -17,6 +17,7 @@ import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
+import globals from "globals";
 
 export default tseslint.config(
   // JavaScript の推奨ルールセット
@@ -68,6 +69,16 @@ export default tseslint.config(
     rules: {
       // テストでのモックに any が必要なケースがある
       "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+
+  // Node.js スクリプト向け設定（scripts/ ディレクトリ）
+  {
+    files: ["scripts/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
     },
   },
 
