@@ -1,13 +1,29 @@
-最終更新: 2026-04-26（wrangler ビルドパス修正）
+最終更新: 2026-04-26（Workers ビルド構成を全面修正）
 
 # 引き継ぎ情報
 
 ## 現在の状態
 
 住所録アプリケーションの初期実装 + テスト・lint・CI の整備が完了。
-`wrangler.toml` のビルドパス設定ミスによるデプロイエラーを修正済み。
+デプロイ時に発生した 2 つのビルドエラーを修正済み。
 
 デプロイはまだ完了していない（要セットアップ）。
+
+## ビルド構成（重要）
+
+```
+npm run build
+  ├─ remix vite:build
+  │   ├─ build/server/index.js  ← Remix サーバーバンドル
+  │   └─ build/client/          ← 静的アセット
+  └─ node scripts/build-worker.js
+      └─ build/worker/index.js  ← wrangler がデプロイするファイル
+                                   （workers/app.ts + Remix を 1 ファイルにバンドル）
+```
+
+- `workers/app.ts` は Vite 開発環境用（`virtual:remix/server-build` を参照）
+- `scripts/build-worker.js` が esbuild で `virtual:remix/server-build` を解決し `build/worker/index.js` を生成
+- `wrangler.toml` の `main = "build/worker/index.js"` がデプロイ対象
 
 ## CI ステータス
 
