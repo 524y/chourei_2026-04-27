@@ -30,6 +30,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* 検索エンジンによるインデックスを無効化（個人情報を含む住所録のため） */}
         <meta name="robots" content="noindex, nofollow" />
+        {/* テーマをハイドレーション前に適用してフラッシュを防ぐ */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t=localStorage.getItem('theme');if(t&&t!=='indigo')document.documentElement.setAttribute('data-theme',t);})();`,
+          }}
+        />
         <Meta />
         <Links />
       </head>
@@ -73,7 +79,7 @@ export function ErrorBoundary() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full text-center">
-        <p className="text-6xl font-bold text-indigo-600">{status}</p>
+        <p className="text-6xl font-bold text-primary">{status}</p>
         <h1 className="mt-4 text-2xl font-bold text-gray-900">{title}</h1>
         <p className="mt-2 text-gray-600">{message}</p>
         <a
