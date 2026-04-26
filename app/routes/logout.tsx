@@ -20,7 +20,8 @@ import { getSession, getSessionStorage } from "~/lib/session.server";
 import { verifyCsrfToken } from "~/lib/csrf.server";
 
 // GET リクエストはトップページへリダイレクト（直接アクセス対策）
-export async function loader({ request }: LoaderFunctionArgs) {
+// _request: LoaderFunctionArgs の引数は使わないが型定義上必要なため _ プレフィックス
+export async function loader(_: LoaderFunctionArgs) {
   return redirect("/");
 }
 

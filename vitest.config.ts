@@ -31,9 +31,12 @@ export default defineConfig({
     // DOM API（document, window 等）を提供する軽量環境
     environment: "happy-dom",
 
-    // グローバル（describe, it, expect）は使わず、各テストで明示的にインポートする。
-    // 明示的インポートの方が型推論が確実で、IDE の補完も効く。
-    globals: false,
+    // globals: true にする理由:
+    //   @testing-library/jest-dom は import 時に expect.extend() をグローバルで呼ぶため、
+    //   globals: false だと ReferenceError になる。
+    //   test ファイルの import { describe, it, expect } from "vitest" は
+    //   globals: true でも引き続き動作する（グローバルと同一の参照）。
+    globals: true,
 
     // テスト実行前のセットアップファイル
     setupFiles: ["./test/setup.ts"],

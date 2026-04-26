@@ -71,8 +71,12 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   if (!isValid) {
     // ユーザー名・パスワードのどちらが不正かを区別しない（ユーザー列挙防止）
+    // fieldErrors を空オブジェクトとして返す場合も型を合わせるため明示的にキャスト
     return json(
-      { error: "ユーザー名またはパスワードが正しくありません", fieldErrors: {} },
+      {
+        error: "ユーザー名またはパスワードが正しくありません",
+        fieldErrors: {} as Record<string, string[]>,
+      },
       { status: 401 }
     );
   }

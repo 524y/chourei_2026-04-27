@@ -1,47 +1,34 @@
 /**
- * Cloudflare Workers エントリーポイント
+ * Cloudflare Workers エントリーポイント（Module Worker 形式）
  *
- * このファイルが wrangler.toml の main として指定され、
- * Cloudflare Edge で実行される起点となる。
+ * @remix-run/cloudflare-workers を使わない理由:
+ *   同パッケージの createRequestHandler は Service Worker API（FetchEvent）前提で
+ *   型定義が `GetLoadContextFunction = (event: FetchEvent) => AppLoadContext` となっており、
+ *   Module Worker の `(request, env, ctx)` パターンと型が合わない。
  *
- * createRequestHandler の役割:
- *   Remix のサーバーサイドランタイム（ルートの loader/action 実行、SSR）を
- *   Workers の fetch イベントに接続する。
+ *   代わりに @remix-run/cloudflare（= @remix-run/server-runtime）の
+ *   createRequestHandler を使う。こちらは
+ *     `(build, mode?) => (request, loadContext?) => Promise<Response>`
+ *   という型で、Module Worker から直接呼べる。
  *
- * getLoadContext で context.cloudflare を構成する理由:
- *   Workers の fetch ハンドラが受け取る env（バインディング）と ctx（実行コンテキスト）を
- *   Remix の loader/action に渡すための標準的な方法。
- *   ローダーでは `context.cloudflare.env.DB` のように参照する。
- *
- * virtual:remix/server-build:
- *   Vite ビルド時に remix vite:build が生成する仮想モジュール。
- *   ビルド成果物（SSR バンドル）を Workers から参照するための Vite プラグインの仕組み。
+ * D1 等のバインディングの受け渡し:
+ *   fetch(request, env, ctx) の env/ctx を loadContext として渡す。
+ *   ローダー側では `context.cloudflare.env.DB` で参照する。
+ *   AppLoadContext の型拡張は load-context.ts を参照。
  */
 
-import { createRequestHandler } from "@remix-run/cloudflare-workers";
+import { createRequestHandler } from "@remix-run/cloudflare";
 
-// ビルド時に Vite が解決する仮想モジュール（型エラーは無視）
+// Vite ビルド時に remix vite:build が解決する仮想モジュール
 // @ts-expect-error - virtual module provided by remix vite:build
 import * as build from "virtual:remix/server-build";
 
-const handler = createRequestHandler({
-  build,
-  getLoadContext(
-    _request: Request,
-    { env, ctx }: { env: Env; ctx: ExecutionContext }
-  ) {
-    // Remix の AppLoadContext を構成する
-    // ルートの loader/action で context.cloudflare.env として参照される
-    return { cloudflare: { env, ctx } };
-  },
-});
+// ハンドラはモジュールスコープで一度だけ生成する（リクエストごとの生成コストを避ける）
+const handleRequest = createRequestHandler(build);
 
 export default {
-  fetch(
-    request: Request,
-    env: Env,
-    ctx: ExecutionContext
-  ): Promise<Response> {
-    return handler(request, { env, ctx });
+  fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    // env と ctx を cloudflare プロパティに包んで渡す（load-context.ts の型定義と対応）
+    return handleRequest(request, { cloudflare: { env, ctx } });
   },
 } satisfies ExportedHandler<Env>;

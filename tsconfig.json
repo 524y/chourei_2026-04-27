@@ -3,7 +3,7 @@
   "exclude": ["**/*.test.ts", "**/*.test.tsx", "test/**"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["@cloudflare/workers-types/2023-07-01"],
+    "types": ["@cloudflare/workers-types/2023-07-01", "@types/react", "@types/react-dom"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
