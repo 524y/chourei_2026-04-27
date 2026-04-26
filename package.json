@@ -1,0 +1,41 @@
+{
+  "name": "chourei",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "build": "remix vite:build",
+    "dev": "remix vite:dev",
+    "typecheck": "tsc",
+    "typegen": "wrangler types",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply chourei-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply chourei-db --remote",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "@remix-run/cloudflare": "^2.16.0",
+    "@remix-run/cloudflare-workers": "^2.16.0",
+    "@remix-run/react": "^2.16.0",
+    "drizzle-orm": "^0.38.0",
+    "isbot": "^4.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241230.0",
+    "@remix-run/dev": "^2.16.0",
+    "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.30.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vite-tsconfig-paths": "^5.1.0",
+    "wrangler": "^3.101.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
