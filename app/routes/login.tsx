@@ -17,6 +17,7 @@ import {
   redirect,
 } from "@remix-run/cloudflare";
 import { Form, useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
+import { ThemeToggle } from "~/components/ThemeToggle";
 import { verifyLogin } from "~/lib/auth.server";
 import { getCsrfToken, verifyCsrfToken } from "~/lib/csrf.server";
 import { getSession, getSessionStorage } from "~/lib/session.server";
@@ -106,6 +107,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="fixed top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">住所録</h1>
