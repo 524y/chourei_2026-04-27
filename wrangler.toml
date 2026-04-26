@@ -3,7 +3,7 @@
 # `wrangler secret put` コマンドで設定し、このファイルには書かない。
 
 name = "chourei"
-main = "workers/app.ts"
+main = "build/server/index.js"
 compatibility_date = "2025-01-01"
 
 # Node.js 互換 API（Buffer 等）を有効化
@@ -12,7 +12,7 @@ compatibility_flags = ["nodejs_compat"]
 
 # 静的アセット（CSS, JS バンドル等）の配信設定
 [site]
-bucket = "./public"
+bucket = "./build/client"
 
 # ビルド設定
 # remix vite:build の出力先を Workers が認識できるように設定
