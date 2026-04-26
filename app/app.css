@@ -29,6 +29,12 @@
   --color-primary-700: 21 128 61;    /* green-700 */
 }
 
+[data-theme="red"] {
+  --color-primary-500: 239 68 68;    /* red-500 */
+  --color-primary-600: 220 38 38;    /* red-600 */
+  --color-primary-700: 185 28 28;    /* red-700 */
+}
+
 @layer components {
   /* フォーム入力の共通スタイル */
   .form-input {
@@ -86,22 +92,27 @@
 }
 
 /*
- * グリーンテーマの色上書き
+ * グリーン・レッドテーマの色上書き
  * @layer components の外側に置くことで specificity に関係なく優先される。
  * .btn-primary / .btn-secondary / .form-input の indigo 固定色を
  * テーマ変数で上書きする。
  */
-[data-theme="green"] .btn-primary {
+[data-theme="green"] .btn-primary,
+[data-theme="red"] .btn-primary {
   background-color: rgb(var(--color-primary-600));
 }
-[data-theme="green"] .btn-primary:hover {
+[data-theme="green"] .btn-primary:hover,
+[data-theme="red"] .btn-primary:hover {
   background-color: rgb(var(--color-primary-700));
 }
 [data-theme="green"] .btn-primary:focus,
-[data-theme="green"] .btn-secondary:focus {
+[data-theme="green"] .btn-secondary:focus,
+[data-theme="red"] .btn-primary:focus,
+[data-theme="red"] .btn-secondary:focus {
   --tw-ring-color: rgb(var(--color-primary-500) / 1);
 }
-[data-theme="green"] .form-input:focus {
+[data-theme="green"] .form-input:focus,
+[data-theme="red"] .form-input:focus {
   border-color: rgb(var(--color-primary-500));
   --tw-ring-color: rgb(var(--color-primary-500) / 1);
 }
