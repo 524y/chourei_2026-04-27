@@ -114,7 +114,7 @@ export default function ContactDetailPage() {
               <div>
                 <dt className="text-sm font-medium text-gray-500">電話番号</dt>
                 <dd className="mt-1 text-sm text-gray-900">
-                  <a href={`tel:${contact.phone}`} className="text-indigo-600 hover:underline">
+                  <a href={`tel:${contact.phone}`} className="link-primary">
                     {contact.phone}
                   </a>
                 </dd>
@@ -124,7 +124,7 @@ export default function ContactDetailPage() {
               <div>
                 <dt className="text-sm font-medium text-gray-500">メールアドレス</dt>
                 <dd className="mt-1 text-sm text-gray-900">
-                  <a href={`mailto:${contact.email}`} className="text-indigo-600 hover:underline">
+                  <a href={`mailto:${contact.email}`} className="link-primary">
                     {contact.email}
                   </a>
                 </dd>

@@ -23,6 +23,7 @@ import {
   json,
 } from "@remix-run/cloudflare";
 import { Form, Link, useLoaderData, useSearchParams } from "@remix-run/react";
+import { ThemeToggle } from "~/components/ThemeToggle";
 import { count, like, or, asc } from "drizzle-orm";
 import { contacts } from "../../drizzle/schema";
 import { getDb } from "~/lib/db.server";
@@ -95,12 +96,15 @@ export default function ContactsIndex() {
       <header className="bg-white shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold text-gray-900">住所録</h1>
-          <Form method="post" action="/logout">
-            <input type="hidden" name="_csrf" value={csrfToken} />
-            <button type="submit" className="btn-secondary text-sm">
-              ログアウト
-            </button>
-          </Form>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Form method="post" action="/logout">
+              <input type="hidden" name="_csrf" value={csrfToken} />
+              <button type="submit" className="btn-secondary text-sm">
+                ログアウト
+              </button>
+            </Form>
+          </div>
         </div>
       </header>
 
