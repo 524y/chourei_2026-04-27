@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 const THEMES = [
   { value: "indigo", label: "インディゴ" },
   { value: "green", label: "グリーン" },
+  { value: "red", label: "レッド" },
 ] as const;
 
 type Theme = (typeof THEMES)[number]["value"];
